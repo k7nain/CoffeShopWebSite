@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <!-- Stop locked build errors when the API is still running in Visual Studio -->
-  <Target Name="StopRunningApiHost" BeforeTargets="BeforeBuild" Condition="'$(DesignTimeBuild)' != 'true'">
+  <Target Name="StopRunningApiHost" BeforeTargets="BeforeBuild" Condition="'$(DesignTimeBuild)' != 'true' AND '$(OS)' == 'Windows_NT'">
     <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;Get-Process -Name 'CoffeeShop.API' -ErrorAction SilentlyContinue | Stop-Process -Force; Get-CimInstance Win32_Process -Filter \&quot;Name='dotnet.exe'\&quot; | Where-Object { $_.CommandLine -like '*CoffeeShop.API*' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }&quot;" IgnoreExitCode="true" />
   </Target>
 

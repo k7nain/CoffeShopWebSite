@@ -1,0 +1,35 @@
+# Git & IDE
+.git
+.gitignore
+.vs
+.vscode
+.idea
+*.user
+*.suo
+
+# Build output
+**/bin/
+**/obj/
+**/out/
+**/publish/
+
+# Local / secrets
+**/.env
+**/.env.*
+**/appsettings.*.local.json
+**/secrets.json
+
+# Frontend (not part of API image)
+client/
+**/node_modules/
+
+# Docs & misc
+README.md
+**/*.md
+**/test-register.json
+terminals/
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore

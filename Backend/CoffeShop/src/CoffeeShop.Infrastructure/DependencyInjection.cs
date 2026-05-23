@@ -18,6 +18,8 @@ public static class DependencyInjection
 
         var useInMemory = configuration.GetValue<bool?>("UseInMemoryDatabase")
             ?? configuration.GetValue("ASPNETCORE_ENVIRONMENT", "") == "Development";
+        var connectionString = DatabaseConnectionResolver.Resolve(configuration);
+
         services.AddDbContext<ApplicationDbContext>(options =>
         {
             if (useInMemory)
@@ -26,7 +28,13 @@ public static class DependencyInjection
             }
             else
             {
-                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
+                if (string.IsNullOrWhiteSpace(connectionString))
+                {
+                    throw new InvalidOperationException(
+                        "PostgreSQL connection string is missing. Set DATABASE_URL (Railway) or ConnectionStrings:DefaultConnection.");
+                }
+
+                options.UseNpgsql(connectionString);
             }
         });
 
